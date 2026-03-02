@@ -25,8 +25,9 @@ while True:
         for box in boxes:
             x1, y1, x2, y2 = box.astype(int)
             cv2.rectangle(img_RGB, (x1, y1), (x2, y2), (255, 0, 0), 3)
-    cv2.putText(img_RGB, str(
-        probs[0]), (30, 30), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1.3, (234, 134, 174), 2)
+            cv2.putText(img_RGB, str(
+                probs[0]), (x1, y1), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1.3, (234, 134, 174), 2)
+
     cv2.imshow('Video Capturing (Press Q to exit)', img_RGB)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
