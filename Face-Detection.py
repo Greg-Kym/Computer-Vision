@@ -1,8 +1,10 @@
 import cv2
+import torch
 from facenet_pytorch import MTCNN
-import numpy as np
 
 cap = cv2.VideoCapture(0)
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+mtcnn = MTCNN(keep_all=True, device=device)
 
 while True:
     success, img = cap.read()
@@ -12,7 +14,7 @@ while True:
 
     img_RGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    boxes, probs = MTCNN.detect(img_RGB)
+    boxes, probs = mtcnn.detect(img_RGB)
 
     if probs[0] is None:
         probs[0] = None
@@ -27,6 +29,8 @@ while True:
         probs[0]), (30, 30), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 1.3, (234, 134, 174), 2)
     cv2.imshow('Video Capturing (Press Q to exit)', img_RGB)
 
-    if
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
-cv2.clear
+cap.release()
+cv2.destroyAllWindows()
