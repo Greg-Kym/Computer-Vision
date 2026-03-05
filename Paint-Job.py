@@ -8,9 +8,16 @@ cap.set(4, 480)
 # 1st 3 are minimum last 3 maximum  hue min, sat min, val min
 colorHSV = [[132, 92, 0, 255, 255, 255],  # red color hsv
             [83, 177, 156, 255, 255, 255],  # blue color hsv
-            [0, 93, 255, 255, 255, 255]  # orange hsv
+            [0, 93, 255, 255, 255, 255],  # orange hsv
             [14, 68, 213, 91, 255, 255]  # green
             ]
+
+myColors = [
+    [],  # red
+    [],  # blue
+    [],  # orange
+    []  # green
+]
 
 
 def findColors(img, colorHSV):
@@ -25,7 +32,11 @@ def findColors(img, colorHSV):
 
         x, y = getContours(mask)
 
-        cv2.imshow(str(color[count]), mask)
+        imgResult = cv2.bitwise_and(img, img, mask)
+
+        cv2.circle(img, (x, y), 10, )
+
+        cv2.imshow(str(color[count]), imgResult)
 
 
 def getContours(mask):
