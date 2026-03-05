@@ -37,7 +37,7 @@ def findColors(img, colorHSV, myColors):
 
         x, y = getContours(mask)
 
-        cv2.circle(imgResult, (x, y), 10, myColors[count], 2, cv2.FILLED)
+        cv2.circle(imgResult, (x, y), 10, myColors[count], cv2.FILLED)
 
         if x != 0 and y != 0:
             points.append([x, y, count])
@@ -73,7 +73,7 @@ def getContours(mask):
 def draw(myPoints, myColors):
     for point in myPoints:
         cv2.circle(imgResult, (point[0], point[1]),
-                   10, (myColors[point[2]]), 2, cv2.FILLED)
+                   10, (myColors[point[2]]), cv2.FILLED)
 
 
 while True:
