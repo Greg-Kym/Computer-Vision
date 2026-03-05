@@ -42,6 +42,8 @@ def findColors(img, colorHSV, myColors):
         if x != 0 and y != 0:
             points.append([x, y, count])
 
+        count += 1
+
     return points
 
 
@@ -57,7 +59,7 @@ def getContours(mask):
 
         if area > 500:
             # Calculate perimeter
-            peri = cv2.arcLength(cnt)
+            peri = cv2.arcLength(cnt, True)
 
             # Approximate contour shape
             approx = cv2.approxPolyDP(cnt, 0.02 * peri, True)
@@ -65,13 +67,13 @@ def getContours(mask):
             # Get Bounding rectangle
             x, y, w, h = cv2.boundingRect(approx)
 
-    return (x + w) // 2, y
+    return x + (w // 2), y
 
 
 def draw(myPoints, myColors):
     for point in myPoints:
         cv2.circle(imgResult, (point[0], point[1]),
-                   10, (myColors[point[2]]), 2)
+                   10, (myColors[point[2]]), 2, cv2.FILLED)
 
 
 while True:
