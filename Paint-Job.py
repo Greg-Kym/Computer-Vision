@@ -12,15 +12,16 @@ colorHSV = [[132, 92, 0, 255, 255, 255],  # red color hsv
             [14, 68, 213, 91, 255, 255]  # green
             ]
 
+# Colors in BGR
 myColors = [
-    [],  # red
-    [],  # blue
-    [],  # orange
-    []  # green
+    [0, 40, 255],  # red
+    [255, 0, 0],  # blue
+    [0, 106, 255],  # orange
+    [0, 255, 200]  # green
 ]
 
 
-def findColors(img, colorHSV):
+def findColors(img, colorHSV, myColors):
     # Convert bgr to hsv
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -68,7 +69,7 @@ while True:
     if not success:
         break
 
-    findColors(img, colorHSV)
+    findColors(img, colorHSV, myColors)
     cv2.imshow('Camera (Press Q to exit)', img)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
