@@ -67,7 +67,7 @@ def getContours(mask):
             # Get Bounding rectangle
             x, y, w, h = cv2.boundingRect(approx)
 
-    return x + (w // 2), y
+    return x + w // 2, y
 
 
 def draw(myPoints, myColors):
