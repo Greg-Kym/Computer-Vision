@@ -20,12 +20,16 @@ myColors = [
     [0, 255, 200]  # green
 ]
 
+myPoints = []
+
 
 def findColors(img, colorHSV, myColors):
     # Convert bgr to hsv
     imgHsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     count = 0
+    points = []
+
     for color in colorHSV:
         lower = np.array(color[0:3])
         upper = np.array(color[3:6])
@@ -33,11 +37,12 @@ def findColors(img, colorHSV, myColors):
 
         x, y = getContours(mask)
 
-        imgResult = cv2.bitwise_and(img, img, mask)
+        cv2.circle(imgResult, (x, y), 10, myColors[count], 2, cv2.FILLED)
 
-        cv2.circle(img, (x, y), 10, )
+        if x != 0 and y != 0:
+            points.append([x, y, count])
 
-        cv2.imshow(str(color[count]), imgResult)
+    return points
 
 
 def getContours(mask):
@@ -60,17 +65,32 @@ def getContours(mask):
             # Get Bounding rectangle
             x, y, w, h = cv2.boundingRect(approx)
 
-    return (x + w) / 2, y
+    return (x + w) // 2, y
+
+
+def draw(myPoints, myColors):
+    for point in myPoints:
+        cv2.circle(imgResult, (point[0], point[1]),
+                   10, (myColors[point[2]]), 2)
 
 
 while True:
     success, img = cap.read()
+    imgResult = img.copy()
 
     if not success:
         break
 
-    findColors(img, colorHSV, myColors)
-    cv2.imshow('Camera (Press Q to exit)', img)
+    points = findColors(img, colorHSV, myColors)
+
+    if len(points) != 0:
+        for newPoint in points:
+            myPoints.append(newPoint)
+
+    if len(myPoints) != 0:
+        draw(myPoints, myColors)
+
+    cv2.imshow('Camera (Press Q to exit)', imgResult)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
