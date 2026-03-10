@@ -45,6 +45,15 @@ def getContours(img):
     return biggest
 
 
+def getWarped(points):
+    print(points)
+
+    reArrange(points)
+
+
+def reArrange(points):
+
+
 while True:
     succ, img = cap.read()
 
@@ -60,7 +69,7 @@ while True:
 
     biggest = getContours(imgClear)
 
-    getWarped()
+    getWarped(biggest)
 
     cv2.imshow('Image (Press Q to cancel)', imgContour)
 
