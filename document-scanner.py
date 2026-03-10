@@ -45,9 +45,21 @@ def getContours(img):
     return biggest
 
 
-def getWarped(points):
-    print(points.shape)
+def getWarped(img, points):
     points = reArrange(points)
+
+    pts1 = np.float32(points)
+    pts2 = np.float32([
+        [0, 0],
+        [widthImg, 0],
+        [0, heightImg],
+        [widthImg, heightImg]
+    ])
+
+    matrix = cv2.getPerspectiveTransform(pts1, pts2)
+    imgOutput = cv2.warpPerspective(img, matrix, (widthImg, heightImg))
+
+    return imgOutput
 
 
 def reArrange(points):
@@ -55,12 +67,12 @@ def reArrange(points):
     newPoints = np.zeros((4, 1, 2), np.int32)
 
     add = points.sum(1)
-    newPoints[0] = np.argmin(add)
-    newPoints[3] = np.argmax(add)
+    newPoints[0] = points[np.argmin(add)]
+    newPoints[3] = points[np.argmax(add)]
 
-    diff = points.diff(1)
-    newPoints[1] = np.argmin(diff)
-    newPoints[2] = np.argmax(diff)
+    diff = np.diff(points, axis=1)
+    newPoints[1] = points[np.argmin(diff)]
+    newPoints[2] = points[np.argmax(diff)]
 
     return newPoints
 
@@ -80,9 +92,11 @@ while True:
 
     biggest = getContours(imgClear)
 
-    getWarped(biggest)
-
-    cv2.imshow('Image (Press Q to cancel)', imgContour)
+    if biggest.size != 0:
+        imgContour = getWarped(img, biggest)
+        cv2.imshow('Image (Press Q to cancel)', imgContour)
+    else:
+        cv2.imshow('Image (Press Q to cancel)', imgContour)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
