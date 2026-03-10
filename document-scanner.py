@@ -46,12 +46,23 @@ def getContours(img):
 
 
 def getWarped(points):
-    print(points)
-
-    reArrange(points)
+    print(points.shape)
+    points = reArrange(points)
 
 
 def reArrange(points):
+    points = points.reshape((4, 2))
+    newPoints = np.zeros((4, 1, 2), np.int32)
+
+    add = points.sum(1)
+    newPoints[0] = np.argmin(add)
+    newPoints[3] = np.argmax(add)
+
+    diff = points.diff(1)
+    newPoints[1] = np.argmin(diff)
+    newPoints[2] = np.argmax(diff)
+
+    return newPoints
 
 
 while True:
